@@ -1,32 +1,23 @@
 const React = require('react');
 const { Component } = require('react');
 
-class FilteredFruitList extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      items: []
-    };
-  }
+const FilteredFruitList = ({fruit, filter}) =>{
+  
+  const list = !filter ? fruit : fruit.filter(i => i.fruit_type == filter);
+  return(
+ 
+    <ul className ='fruit-list'>
+   {list.map((fruit, idx) => <li key={idx}>{fruit.char}</li>)}
 
-  componentWillMount() {
-    fetch('/api/fruit')
-      .then(res => res.json())
-      .then(fruit => this.setState({ items: fruit}));
-  }
-
-  render() {
-    const list = !this.props.filter ? this.state.items :
-      this.state.items.filter(i => i.fruit_type == this.props.filter);
-
-    return (
-      <ul className="fruit-list">
-        {list.map((i,idx) => <li key={idx}>{i.char}</li>)}
-      </ul>
-    );
-  }
+    })</ul>
+   
+  )
 }
 
+FilteredFruitList.defaultProps = {
+  filter: null, //how do you know the default value here?? where in the test does it say empty array aside from the on in app?
+  fruit: []
+}
 module.exports = FilteredFruitList;
 
